@@ -27,6 +27,9 @@
           @click-item='clickItem'
           @click-nav='clickNav'
           />
+          <div>
+            <Field v-model="staffFrom.format" label="业态" placeholder="请输入业态" />
+          </div>
           <div class="sh-tree">
             <mu-button @click="selectArea" style="width:50%;" color="success">确定</mu-button>
           </div>
@@ -74,7 +77,7 @@
 
 <script>
 import {getStaff, findCityAll} from '../api/user'
-import { TreeSelect, Overlay, List } from 'vant'
+import { TreeSelect, Overlay, List, Field } from 'vant'
 export default {
   name: 'customer',
   data () {
@@ -106,7 +109,7 @@ export default {
       }
     }
   },
-  components: {TreeSelect, Overlay, List},
+  components: {TreeSelect, Overlay, List, Field},
   created() {
     this.getStaff(1)
     this.getAddress()

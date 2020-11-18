@@ -1,7 +1,7 @@
 
 export const options = {
   position: 'top',               // 弹出的位置
-  time: 2000,                       // 显示的时长
+  time: 5000,                       // 显示的时长
   closeIcon: 'close',               // 关闭的图标
   close: true,                      // 是否显示关闭按钮
   successIcon: 'check_circle',      // 成功信息图标

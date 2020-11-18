@@ -22,7 +22,7 @@ service.interceptors.request.use(function(config){        //添加一个请求�
 
 // response interceptor
 service.interceptors.response.use(response => {
-    if (response.data.code === '208') {
+    if (response.data.code === '209' || response.data.code === '208') {
         Toast.error(response.data.message)
         router.push('/login')
       }
