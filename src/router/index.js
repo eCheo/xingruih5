@@ -10,8 +10,13 @@ const routers = new Route({
     routes: routes
 })
 
-// routers.beforeEach((to, from, next) => {
-//         next({name: 'login'})
-// })
+routers.beforeEach((to, from, next) => {
+    if (to.name === '首页' && !sessionStorage.getItem('token')) {
+        next({name: 'login'})
+    } else {
+        next()
+    }
+})
+
 
 export default routers

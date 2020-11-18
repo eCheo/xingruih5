@@ -1,61 +1,42 @@
 <template>
     <div class="footer">
-        <div class="ft-content">
-            <div>
-                <p>猎讯资讯</p>
-                <a-row style="width:242px;" type="flex" justify="space-between">
-                    <a-col :span="9">
-                        猎讯资讯
-                    </a-col>
-                    <a-col :span="9">
-                        猎讯资讯
-                    </a-col>
-                    <a-col :span="9">
-                        猎讯资讯
-                    </a-col>
-                    <a-col :span="9">
-                        猎讯资讯
-                    </a-col>
-                    <a-col :span="9">
-                        猎讯资讯
-                    </a-col>
-                    <a-col :span="9">
-                        猎讯资讯
-                    </a-col>
-                    <a-col :span="9">
-                        猎讯资讯
-                    </a-col>
-                    <a-col :span="9">
-                        猎讯资讯
-                    </a-col>
-                </a-row>
-                <a-row type="flex" justify="start">
-                    <a-col :span="4">
-                       猎讯资讯
-                    </a-col>
-                </a-row>
-            </div>
-            
-        </div>
+        <mu-container>
+        <mu-bottom-nav :value.sync='name'>
+            <mu-bottom-nav-item :value='0' title="我的客户" icon="assignment_ind" to='/mycustomer'></mu-bottom-nav-item>
+            <mu-bottom-nav-item :value='1' title="共享池" icon="supervisor_account" to='/shared'></mu-bottom-nav-item>
+            <mu-bottom-nav-item :value='2' title="铺源" icon="storefront"></mu-bottom-nav-item>
+            <mu-bottom-nav-item :value='3' title="设置" icon="settings"></mu-bottom-nav-item>
+        </mu-bottom-nav>
+        </mu-container>
     </div>
 </template>
 
 <script>
 export default {
-    
+    data () {
+        return {
+            name: 0
+        }
+    },
+    created() {
+        if (this.$route.name === '我的客户') {
+            this.name = 0;
+        } else if (this.$route.name === '共享池') {
+            this.name = 1;
+        } else if (this.$route.name === '铺源') {
+            this.name = 2;
+        } else if (this.$route.name === '设置') {
+            this.name = 3;
+        }
+    }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="less" scoped>
 .footer {
-    height: 459px;
-    background-color: #2D3237;
-    color: #fff;
-    font-size: 18px;
-    .ft-content {
-        width: 1366px;
-        padding: 65px 133px 36px 117px;
-        margin: 0 auto;
-    }
+    background-color: #fff;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
 }
 </style>
