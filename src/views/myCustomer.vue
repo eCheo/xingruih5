@@ -3,60 +3,98 @@
     <div style="height:50px;">
       <div class="cs-top">
         <div>
-          <span @click="show = !show" :class="{'cu-select':show}">需求区域</span>
+          <p :class="{'p-select': show}" @click="changeTitle(1)">{{shTextObj.region}}</p>
         </div>
         <div>
-          <span>需求面积</span>
+          <p @click="changeTitle(2)">{{shTextObj.area}}</p>
         </div>
         <div>
-          <span>客户名称</span>
+          <p @click="changeTitle(3)">{{shTextObj.name}}</p>
         </div>
         <div>
-          <span>业态</span>
+          <p @click="changeTitle(4)">{{shTextObj.format}}</p>
+        </div>
+        <div>
+          <p @click="$router.push('/addcustomer')">添加</p>
         </div>
       </div>
-      <Overlay :show="show" @click.prevent.stop @click="show = false" class-name='cu-over'>
-        <TreeSelect
-        :items="items"
-        :active-id.sync="activeId"
-        :main-active-index.sync="activeIndex"
-      />
+      <Overlay :show="show" class-name='cu-over'>
+        <div>
+          <TreeSelect
+          v-if="titleShow === 1"
+          :items="items"
+          :active-id.sync="activeId"
+          :main-active-index.sync="activeIndex"
+          @click-item='clickItem'
+          @click-nav='clickNav'
+          />
+          <div style="display:flex;" v-if="titleShow === 2">
+            <div>
+              <Field v-model="staffFrom.areaLarge" label="需求面积"  placeholder='m²'/>
+            </div>
+            <span style="display:inline-block;background:#fff;padding-top:12px;">~</span>
+            <div>
+              <Field v-model="staffFrom.areaSmall" placeholder='m²'/>
+            </div>
+          </div>
+          <div v-if="titleShow === 3">
+            <Field v-model="staffFrom.name" label="客户名称" placeholder="请输入客户名称" />
+          </div>
+          <div v-if="titleShow === 4">
+            <Field v-model="staffFrom.format" label="业态" placeholder="请输入业态" />
+          </div>
+          <div class="sh-tree">
+            <mu-button @click="selectArea" style="width:50%;" color="success">查询</mu-button>
+          </div>
+        </div>
+        <div style="width:100%;height:100%;z-index:2;" @click="show = false">
+
+        </div>
       </Overlay>
     </div>
-      <mu-container ref="container" class="demo-loadmore-content">
-      <mu-load-more @refresh="getStaff" :refreshing="refreshing" :loading="loading" @load="getStaff">
-        <mu-list>
+        <List v-model="loading"
+          :finished="finished"
+          finished-text="没有更多了"
+          @load="getStaff">
           <div v-if='staffData.length > 0'>
-            <template v-for="(item) in staffData">
-              <mu-list-item>
-                <mu-list-item-title>{{item.name}}</mu-list-item-title>
-                <mu-list-item-title>{{item.sex.message}}</mu-list-item-title>
-                <mu-list-item-title>{{item.format || '--'}}</mu-list-item-title>
-                <mu-list-item-title>{{item.brandName === '' ? '--' : item.brandName}}</mu-list-item-title>
-                <mu-list-item-title>{{item.demandArea + ' m²' + '~' + item.deadAreaEnd + ' m²'}}</mu-list-item-title>
-                <mu-list-item-title>{{(item.areaName || '--')+ ' ' + (item.streetName || '--')}}</mu-list-item-title>
-              </mu-list-item>
-              <mu-divider />
+            <template v-for="(item, index) in staffData">
+              <div :key="index" style="padding: 0 12px;">
+                <div class="sh-title">
+                   <div>
+                      客户姓名：{{item.name}}
+                   </div>
+                    <div>
+                      性别：{{item.sex.message}}
+                    </div>
+                </div>
+                <div style="margin-top:10px;">
+                  <div class="sh-ind">
+                    <div>业态：{{item.format || '--'}}</div>
+                    <div>录入人: {{item.memberName === '' ? '--' : item.memberName}}</div>
+                  </div>
+                  <div>
+                    <div>需求面积：{{item.demandArea + ' m²' + '~' + item.deadAreaEnd + ' m²'}}</div>
+                    <div>需求区域：{{(item.areaName || '--')+ ' ' + (item.streetName || '--')}}</div>
+                    <div>备注：{{item.demandAddress}}</div>
+                  </div>
+                </div>
+                <mu-divider style="margin:12px 0;" />
+              </div>
             </template>
           </div>
-          <div v-else style="text-align:center;">
-            暂无数据
-          </div>
-        </mu-list>
-      </mu-load-more>
-    </mu-container>
+        </List>
   </div>
 </template>
 
 <script>
 import {getStaff, findCityAll} from '../api/user'
-import { TreeSelect, Overlay  } from 'vant'
+import { TreeSelect, Overlay, List, Field } from 'vant'
 export default {
   name: 'customer',
   data () {
     return {
       num: 10,
-      refreshing: false,
+      finished: false,
       loading: false,
       text: 'List',
       staffData: [],
@@ -71,21 +109,27 @@ export default {
         streetId: ''
       },
       items: [],
-      activeId: 1,
+      activeId: '',
       activeIndex: 0,
-      show: false
+      show: false,
+      shTextObj: {
+        region: '需求区域',
+        area: '需求面积',
+        name: '客户名称',
+        format: '业态'
+      },
+      titleShow: 1
     }
   },
-  components: {TreeSelect, Overlay},
+  components: {TreeSelect, Overlay, List, Field},
   created() {
     this.getStaff(1)
     this.getAddress()
   },
   methods: {
-    getStaff(page, pageSize) {
-      this.tabLoading = true
+    getStaff(page) {
+      this.loading = true
       this.staffFrom.page = page
-      this.staffFrom.pageSize = pageSize || 10;
       let params = {
          size: this.staffFrom.pageSize,
           page: this.staffFrom.page,
@@ -100,7 +144,11 @@ export default {
       getStaff(params).then(res => {
           if (res.status === 200 && res.data.code === '200') {
             this.staffData = res.data.data.content
+            this.finished = true;
+            this.loading = false;
           } else {
+            this.finished = true;
+            this.loading = false;
             this.$message.error(res.data.message)
           }
         })
@@ -178,16 +226,25 @@ export default {
       this.areaDefaultList[0] = data.areaId
       this.areaDefaultList[1] = data.streetId
     },
-    filter(inputValue, path) {
-      return path.some(option => option.label.toLowerCase().indexOf(inputValue.toLowerCase()) > -1);
+    changeTitle(val) {
+      this.show = !this.show;
+      this.titleShow = val;
     },
-    onSelectChange(value) {
-      this.staffFrom.areaId = value[0];
-      this.staffFrom.streetId = value[1];
+    selectArea() {
+      this.show = false;
+      this.staffFrom.areaId = this.items[this.activeIndex].id;
+      if (this.activeId === '') {
+        this.shTextObj.region = this.activeIndex === 0 ? '需求区域' : this.items[this.activeIndex].text;
+      }
+      this.getStaff(1);
     },
-    onChange(value) {
-      this.form.areaId = value[0];
-      this.form.streetId = value[1];
+    clickItem(data) {
+      this.shTextObj.region = data.text;
+      this.staffFrom.streetId = data.id;
+    },
+    clickNav() {
+      this.activeId = ''
+      this.staffFrom.streetId = ''
     },
     getAddress() {
       findCityAll().then(res => {
@@ -196,8 +253,9 @@ export default {
             item.children = item.children.map(it => {return {id:it.id, text: it.name}})
           })
          this.items = res.data.data.map(item => {return {id:item.id, text: item.name,children: item.children}})
+         this.items.unshift({id: '', text: '全部'})
         } else {
-          this.$message.error(res.data.message);
+          this.$toast.error(res.data.message);
         }
       })
     }
@@ -224,36 +282,46 @@ export default {
   text-align: center;
   padding: 12px;
   background-color: #fff;
-  // color: #999999;
+  border-bottom: 1px solid #e9e9e9;
   div {
     width: 33.3%;
+    p {
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      margin: 0;
+    }
   }
+}
+.p-select {
+  color: #333;
+  font-weight: bold;
 }
 .cu-over {
   top: 45px;
 }
-.cu-select {
-  color: #333;
+.sh-title {
+  display: flex;
+  justify-content: space-between;
   font-weight: bold;
+}
+.sh-ind {
+  display: flex;
+  justify-content: space-between;
+}
+.sh-tree {
+  width: 100%;
+  background-color: #fff;
+  padding-bottom: 5px;
+  text-align: center;
 }
 </style>
 <style lang="less">
-.de-left {
-  width:200px;
-  .ant-col-4 {
-    width: 39%;
-  }
-  .ant-col-14 {
-    width: 59%;
-  }
+.analysis .mu-item {
+  height: auto;
 }
-.de-center {
-    display: inline-block;
-    margin: 8px 12px 8px 8px;
-}
-.de-right {
-  .ant-col-14 {
-    width: 64%;
+.custom-image .van-empty__image {
+    width: 90px;
+    height: 90px;
   }
-}
 </style>

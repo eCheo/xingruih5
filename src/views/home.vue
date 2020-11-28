@@ -22,4 +22,11 @@ export default {
 </script>
 
 <style lang="less">
+.hm-content {
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 67px);
+    overflow: auto;
+    background-color: #fff;
+}
 </style>

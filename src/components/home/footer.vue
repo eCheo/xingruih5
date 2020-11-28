@@ -4,8 +4,8 @@
         <mu-bottom-nav :value.sync='name'>
             <mu-bottom-nav-item :value='0' title="我的客户" icon="assignment_ind" to='/mycustomer'></mu-bottom-nav-item>
             <mu-bottom-nav-item :value='1' title="共享池" icon="supervisor_account" to='/shared'></mu-bottom-nav-item>
-            <mu-bottom-nav-item :value='2' title="铺源" icon="storefront"></mu-bottom-nav-item>
-            <mu-bottom-nav-item :value='3' title="设置" icon="settings"></mu-bottom-nav-item>
+            <mu-bottom-nav-item :value='2' title="铺源" icon="storefront" to='/shop'></mu-bottom-nav-item>
+            <mu-bottom-nav-item :value='3' title="我的" icon="settings"></mu-bottom-nav-item>
         </mu-bottom-nav>
         </mu-container>
     </div>
@@ -19,14 +19,29 @@ export default {
         }
     },
     created() {
-        if (this.$route.name === '我的客户') {
-            this.name = 0;
-        } else if (this.$route.name === '共享池') {
-            this.name = 1;
-        } else if (this.$route.name === '铺源') {
-            this.name = 2;
-        } else if (this.$route.name === '设置') {
-            this.name = 3;
+        // if (this.$route.name === '我的客户') {
+        //     this.name = 0;
+        // } else if (this.$route.name === '共享池') {
+        //     this.name = 1;
+        // } else if (this.$route.name === '铺源') {
+        //     this.name = 2;
+        // } else if (this.$route.name === '我的') {
+        //     this.name = 3;
+        // }
+    },
+    watch: {
+        $route: {
+            handler() {
+                if (this.$route.path.indexOf('customer') > -1) {
+                    this.name = 0;
+                } else if (this.$route.path.indexOf('shared') > -1) {
+                    this.name = 1;
+                } else if (this.$route.name === '铺源' || this.$route.path.indexOf('shop') > -1) {
+                    this.name = 2;
+                } else if (this.$route.name === '我的') {
+                    this.name = 3;
+                }
+            }, deep: true, immediate: true
         }
     }
 }
