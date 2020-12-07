@@ -25,7 +25,7 @@ export default {
 .hm-content {
     position: absolute;
     width: 100%;
-    height: calc(100% - 67px);
+    height: calc(100% - 58px);
     overflow: auto;
     background-color: #fff;
 }

@@ -4,7 +4,7 @@
     title="客户详情"
     left-text="返回"
     left-arrow
-    @click-left="$router.push('/mycustomer')">
+    @click-left="$router.push('/shared')">
     </van-nav-bar>
     <van-form @submit="onSubmit">
         <van-field
@@ -61,15 +61,29 @@
             type="textarea"
             show-word-limit
         />
-        <span >电话号码：{{cusInfo.isViewPhone ? cusInfo.hidPhone : cusInfo.phone}}</span>
-        <mu-button style="margin-left:15px;" v-if="cusInfo.isViewPhone" color="success"  @click="viewPhone">查看电话号码</mu-button>
+        <div style="padding:0 16px;margin: 10px 0;height: 41px;">
+            <span style="color:#646566;padding-top: 10px;display: inline-block;">电话号码：{{cusInfo.isViewPhone ? cusInfo.hidPhone : cusInfo.phone}}</span>
+            <mu-button style="margin-left:15px;float:right;" v-if="cusInfo.isViewPhone" color="success"  @click="viewPhone">查看电话号码</mu-button>
+        </div>
     </van-form>
+    <div style="padding-left:16px;margin: 10px 0;display:flex;">
+              <span style="padding-top: 10px;color:#646566;">备注：</span>
+              <van-field v-model="remarks" placeholder="请输入跟踪信息" style="width:60%;margin-right:10px;" />
+              <mu-button color='success' @click='addRecord'>添加</mu-button>
+    </div>
     <van-divider>跟踪信息</van-divider>
     <mu-list textline="two-line" style="background-color: #fff;">
         <mu-list-item avatar :ripple="false" button v-for="(item, index) in sharedData" :key="index" style="margin-bottom: 10px;">
         <mu-list-item-content>
             <mu-list-item-title>跟进人：{{item.name}}</mu-list-item-title>
-            <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87)">跟进记录：{{item.remarks}}</mu-list-item-sub-title>
+            <mu-list-item-sub-title style="color: rgba(0, 0, 0, .87);display:flex;">
+                <div>
+                    <span style="display:inline-block;width:70px;">跟进记录：</span>
+                </div>
+                <div>
+                    <p style="display:inline-block;margin:0px">{{item.remarks}}</p>
+                </div>
+            </mu-list-item-sub-title>
             <mu-list-item-sub-title>跟进时间：{{item.followUpDate}}</mu-list-item-sub-title>
             <mu-divider style="margin-top:5px;"></mu-divider>
         </mu-list-item-content>
@@ -81,7 +95,7 @@
 </template>
 
 <script>
-import {findCityAll, getTrackInfo, findById} from '../api/user'
+import {findCityAll, getTrackInfo, findById, viewPhone, createRecord} from '../api/user'
 import { Form, Field, Picker, RadioGroup, Radio, Button, Popup, TreeSelect, NavBar, Pagination, Divider } from 'vant';
 export default {
     data() {
@@ -127,7 +141,8 @@ export default {
             total: 0,
             cusInfo: {
                 sex: {}
-            }
+            },
+            remarks: ''
         }
     },
     components: {
@@ -203,7 +218,7 @@ export default {
             getTrackInfo(params).then(res => {
                 if (res.status === 200 && res.data.code === '200') {
                     this.sharedData = res.data.data.content;
-                    this.total = res.data.data.totalElements
+                    this.total = res.data.data.totalPages
                 } else {
                     this.$toast.error(res.data.message);
                 }
@@ -234,11 +249,29 @@ export default {
                 this.getStaff(1);
                 }
             })
-        }
+        },
+        addRecord() {
+            let params = {
+                customerId: sessionStorage.getItem('cusId'),
+                remarks: this.remarks
+            }
+            createRecord(params).then(res => {
+                if (res.status === 200 && res.data.code === '200') {
+                this.$toast.success('添加跟踪信息成功');
+                this.remarks = ''
+                this.getTrackInfo(1)
+                } else {
+                this.$toast.error(res.data.message);
+                }
+            })
+        },
     }
 }
 </script>
 
-<style lang="less" scoped>
-
+<style lang="less">
+.mu-item-sub-title {
+    overflow: visible;
+    white-space: normal; 
+}
 </style>

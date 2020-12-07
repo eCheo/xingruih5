@@ -1,56 +1,64 @@
 <template>
-  <div class="analysis" style="margin-bottom:20px;">
-    <div style="height:50px;">
+  <div class="analysis" style="margin-bottom:20px; height: calc(100% - 36px);overflow: auto;">
+    <div style="height:99px;">
       <div class="cs-top">
-        <div v-for="(item, index) in shTextList" :key="index">
-          <p :class="{'p-select': item.show}"  @click="changeTitle(item, index)">{{item.name}}</p>
-          <Overlay :show="item.show" class-name='cu-over'>
-            <div>
-              <TreeSelect
-              v-if="index === 0"
-              :items="items"
-              :active-id.sync="activeId"
-              :main-active-index.sync="activeIndex"
-              @click-item='clickItem'
-              @click-nav='clickNav'
-              />
-              <div style="display:flex;" v-if="index === 1">
-                <div>
-                  <Field v-model="staffFrom.areaLarge" label="需求面积"  placeholder='m²'/>
+        <van-search
+          v-model="staffFrom.queryValue"
+          shape="round"
+          background="#4caf50"
+          placeholder="请输入客户姓名/电话/跟踪信息/业态"
+          @search='getStaff(1)'
+        />
+        <div class="cs-box">
+          <div v-for="(item, index) in shTextList" :key="index">
+            <p :class="{'p-select': item.show}"  @click="changeTitle(item, index)">{{item.name}}</p>
+            <Overlay :show="item.show" class-name='cu-over'>
+              <div>
+                <TreeSelect
+                v-if="index === 0"
+                :items="items"
+                :active-id.sync="activeId"
+                :main-active-index.sync="activeIndex"
+                @click-item='clickItem'
+                @click-nav='clickNav'
+                />
+                <div v-if="index === 1">
+                  <div style="padding: 9px 34px; margin-bottom: -1px;background-color:#fff;">
+                    <p
+                      style="text-align: center;"
+                    >{{areaValue[0]+"m²-"}}{{ areaValue[1] === 1000 ? '无限' : areaValue[1] +'m²'}}</p>
+                    <van-slider
+                      button-size="20"
+                      v-model="areaValue"
+                      :range="true"
+                      @change="onAreaChange"
+                      :min="0"
+                      :max="999"
+                      :step="100"
+                      active-color="#4caf50"
+                    />
+                  </div>
                 </div>
-                <span style="display:inline-block;background:#fff;padding-top:12px;">~</span>
-                <div>
-                  <Field v-model="staffFrom.areaSmall" placeholder='m²'/>
+                <div class="sh-tree">
+                  <mu-button @click="selectArea" style="width:50%;" color="success">查询</mu-button>
                 </div>
               </div>
-              <div v-if="index === 2">
-                <Field v-model="staffFrom.name" label="客户名称" placeholder="请输入客户名称" />
-              </div>
-              <div v-if="index === 3">
-                <Field v-model="staffFrom.format" label="业态" placeholder="请输入业态" />
-              </div>
-              <div class="sh-tree">
-                <mu-button @click="selectArea" style="width:50%;" color="success">查询</mu-button>
-              </div>
-            </div>
-            <div style="width:100%;height:100%;z-index:2;" @click="item.show = false">
+              <div style="width:100%;height:100%;z-index:2;" @click="item.show = false">
 
-            </div>
-          </Overlay>
+              </div>
+            </Overlay>
+          </div>
         </div>
       </div>
-      
     </div>
-        <List v-model="loading"
-          :finished="finished"
-          finished-text="没有更多了"
-          @load="getStaff">
           <div v-if='staffData.length > 0'>
             <template v-for="(item, index) in staffData">
               <div :key="index" style="padding: 0 12px;" @click="goDetails(item)">
+                
                 <div class="sh-title">
                    <div>
                       客户姓名：{{item.name}}
+                      <van-tag v-if="item.isRecord" style="margin-left:5px;" round type="danger">已跟踪</van-tag>
                    </div>
                     <div>
                       性别：{{item.sex.message}}
@@ -70,16 +78,29 @@
               </div>
             </template>
           </div>
-          <!-- <div v-else>
-            暂无数据
-          </div> -->
-        </List>
+          <van-empty
+            v-else
+            class="custom-image"
+            image="https://img.yzcdn.cn/vant/custom-empty-image.png"
+            description="暂无数据"
+          />
+        <div style="position: fixed;
+            bottom: 59px;background: #fff;width:100%;display: flex;
+    justify-content: space-between;">
+          <van-pagination style="
+            width: 70%;
+            " v-model="staffFrom.page" :page-count="total" @change='getStaff' mode="simple" />
+            <div style="width:24%;padding-top: 7px;">
+              <input type="text" style="width: 50%;" v-model="page" @input="changeNumber"/>
+              <span @click="getStaff(page)" style="margin-left: 5px;">跳转</span>
+            </div>
+        </div>
   </div>
 </template>
 
 <script>
 import {getStaff, findCityAll} from '../api/user'
-import { TreeSelect, Overlay, List, Field } from 'vant'
+import { TreeSelect, Overlay, Field, Search, Pagination, Slider, Empty, Tag } from 'vant'
 export default {
   name: 'customer',
   data () {
@@ -91,10 +112,10 @@ export default {
       staffData: [],
       staffFrom: {
         page: '1',
-        name: '',
+        queryValue: '',
         pageSize: 10,
-        areaLarge: '',
-        areaSmall: '',
+        demandArea: '',
+        deadAreaEnd: '',
         format: '',
         areaId: '',
         streetId: ''
@@ -110,18 +131,13 @@ export default {
       {
         name: '需求面积',
         show: false
-      },
-      {
-        name: '客户名称',
-        show: false
-      },
-      {
-        name: '业态',
-        show: false
-      }]
+      }],
+      total: 0,
+      areaValue: [0, 100],
+      page: 1
     }
   },
-  components: {TreeSelect, Overlay, List, Field},
+  components: {TreeSelect, Overlay, Field, 'van-search': Search, 'van-pagination': Pagination, "van-slider": Slider, 'van-empty': Empty, 'van-tag':Tag },
   created() {
     this.getStaff(1)
     this.getAddress()
@@ -133,18 +149,17 @@ export default {
       let params = {
          size: this.staffFrom.pageSize,
           page: this.staffFrom.page,
-          EQ_customerStatus: 'Share',
-          GTE_demandArea: this.staffFrom.areaSmall,
-          LTE_demandArea: this.staffFrom.areaLarge,
-          LIKE_format: this.staffFrom.format,
-          LIKE_name: this.staffFrom.name,
-          EQ_areaId: this.staffFrom.areaId,
-          EQ_streetId: this.staffFrom.streetId,
-          sort: 'addDate,desc'
+          deadAreaEnd: this.staffFrom.deadAreaEnd,
+          demandArea: this.staffFrom.demandArea,
+          areaId: this.staffFrom.areaId,
+          streetId: this.staffFrom.streetId,
+          queryValue: this.staffFrom.queryValue,
+          customerStatus: 'Share'
       }
       getStaff(params).then(res => {
           if (res.status === 200 && res.data.code === '200') {
-            this.staffData = res.data.data.content
+            this.staffData = res.data.data.content;
+            this.total = res.data.data.totalPages;
             this.finished = true;
             this.loading = false;
           } else {
@@ -153,6 +168,11 @@ export default {
             this.$message.error(res.data.message)
           }
         })
+    },
+    changeNumber() {
+      if (this.page !== '') {
+        this.page = Number(this.page)
+      }
     },
     goDetails(data) {
         sessionStorage.setItem('cusId', data.id)
@@ -263,12 +283,16 @@ export default {
           this.$toast.error(res.data.message);
         }
       })
+    },
+    onAreaChange(val) {
+      this.staffFrom.demandArea = val[0];
+      this.staffFrom.deadAreaEnd = val[1] === 1000 ? 9999 : val[1];
     }
   },
   watch: {
     $route: {
       handler() {
-        this.getStaff(1)
+        this.getStaff(this.staffFrom.page)
       }
     }
   }
@@ -281,20 +305,21 @@ export default {
   top: 0;
   width: 100%;
   z-index: 99;
-  display: flex;
-  font-size: 14px;
-  justify-content: space-around;
-  text-align: center;
-  padding: 12px;
   background-color: #fff;
-  // border-bottom: 1px solid #e9e9e9;
-  >div {
-    width: 33.3%;
-    p {
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      overflow: hidden;
-      margin: 0;
+ .cs-box {
+    display: flex;
+    font-size: 14px;
+    justify-content: space-around;
+    text-align: center;
+    padding: 12px;
+    >div {
+      width: 33.3%;
+      p {
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        margin: 0;
+      }
     }
   }
 }
@@ -303,7 +328,7 @@ export default {
   font-weight: bold;
 }
 .cu-over {
-  top: 45px;
+  top: 100px;
 }
 .sh-title {
   display: flex;

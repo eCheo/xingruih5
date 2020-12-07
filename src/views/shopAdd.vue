@@ -111,8 +111,12 @@
             show-word-limit
             :rules="[{ required: true, message: '请填写备注' }]"
         />
-        <span style="margin-left:16px;">铺源照片</span>
-        <van-uploader v-model="fileList" :after-read="afterRead" :before-read="beforeRead" :max-count="9"  />
+        <van-field name="fileList" label="铺源照片">
+            <template #input>
+                <van-uploader v-model="fileList" :after-read="afterRead" :before-read="beforeRead" :max-count="9" :before-delete='deleteFile' :rules="[{ required: true, message: '请上传照片' }]"/>
+            </template>
+        </van-field>
+        
         <div style="margin: 16px;">
             <van-button round block type="primary" native-type="submit">
                 提交
@@ -123,7 +127,7 @@
 </template>
 
 <script>
-import {findCityAll, createCustomer, uploadImg} from '../api/user'
+import {findCityAll, createShop, uploadImg} from '../api/user'
 import { Form, Field, Picker, RadioGroup, Radio, Button, Popup, TreeSelect, NavBar, Uploader } from 'vant';
 export default {
     data() {
@@ -218,18 +222,36 @@ export default {
             if (file.type !== 'image/jpeg' && file.type !== 'image/jpg' && file.type !== 'image/png') {
                 this.$toast.error('请上传jpg,png格式图片');
                 return false;
+            } else {
+                return true
             }
         },
-        afterRead(file){
+        afterRead(file) {
             let formData = new FormData();
             formData.append('filename', file.name);
-            formData.append('file', file)
-            console.log(file)
+            formData.append('file', file.file)
             file.status = 'uploading';
             file.message = '上传中...';
             uploadImg(formData).then(res => {
-                
+                if (res.status === 200 && res.data.code === '200') {
+                    file.status = 'done';
+                    file.id = res.data.data.id;
+                    file.url = res.data.data.viewUrl;
+                    this.fileList.forEach(item => {
+                        this.form.imagePaths.push(item.url)
+                    })
+                } else {
+                    file.status = 'failed';
+                    file.message = '上传失败';
+                }
             })
+        },
+        deleteFile(file) {
+           let index = this.fileList.findIndex(item => {
+                item.id === file.id
+            })
+            this.form.imagePaths.splice(index, 1);
+            return true
         }
     }
 }

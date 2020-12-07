@@ -40,6 +40,11 @@ export default [
                 name: '铺源详情',
                 component: () => import('@/views/shopAdd')
             },
+            {
+                path: 'setpassword',
+                name: '我的',
+                component: () => import('@/views/setPassword')
+            },
         ]
     },
     {

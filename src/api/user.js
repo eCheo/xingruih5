@@ -18,7 +18,7 @@ export const loginOut = data => {
 
 export const getStaff = data => {
   return service({
-    url: '/api/backend/customer/findByCondition.json',
+    url: '/api/backend/customer/findByCustomerQueryDto.json',
     params: data,
     method: 'get'
   })
@@ -66,7 +66,7 @@ export const viewPhone = data => {
 
 export const getShop = data => {
   return service({
-    url: '/api/backend/shop/findPageByCondition.json',
+    url: '/api/backend/shop/findByShopQueryDto.json',
     params: data,
     method: 'get'
   })
@@ -99,6 +99,20 @@ export const createShop = data => {
 export const uploadImg = data => {
   return service({
     url: 'api/obs/upload.json',
+    data,
+    method: 'post'
+  })
+}
+export const createRecord = data => {
+  return service({
+    url: '/api/backend/customer/createRecord.json',
+    data,
+    method: 'post'
+  })
+}
+export const resetPassword = data => {
+  return service({
+    url: '/api/backend/member/changePassword.json',
     data,
     method: 'post'
   })

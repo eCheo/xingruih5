@@ -20,43 +20,56 @@
     <p style="padding-left: 12px;">区域位置：{{shopDetails.area || '--'}}</p>
     <div class="cus-box" style="padding: 12px;">
       <div>
-        <span>业主姓名: {{shopDetails.name}}</span>
+        <span>业主姓名</span>
+        <span>{{shopDetails.name}}</span>
       </div>
       <div>
-        <span>性别: {{shopDetails.sex.message}}</span>
+        <span>性别</span>
+        <span>{{shopDetails.sex.message}}</span>
       </div>
       <div>
-        <span>电话号码: {{shopDetails.phone}}</span>
+        <span>电话号码</span>
+        <span>{{shopDetails.phone}}</span>
       </div>
       <div>
-        <span>区域街道: {{(shopDetails.areaName || '--')+''+(shopDetails.streetName || '--')}}</span>
+        <span>区域街道</span>
+        <span>{{(shopDetails.areaName || '--')+''+(shopDetails.streetName || '--')}}</span>
       </div>
       <div>
-        <span>楼层: 第{{shopDetails.floorHeight}}层</span>
+        <span>楼层</span>
+        <span>第{{shopDetails.floorHeight}}层</span>
       </div>
       <div>
-        <span>层高: {{shopDetails.buildingHeight}}米</span>
+        <span>层高</span>
+        <span>{{shopDetails.buildingHeight}}米</span>
       </div>
       <div>
-        <span>开间: {{shopDetails.openRoom}}米</span>
+        <span>开间</span>
+        <span>{{shopDetails.openRoom}}米</span>
       </div>
       <div>
-        <span>进深: {{shopDetails.deepening}}米</span>
+        <span>进深</span>
+        <span>{{shopDetails.deepening}}米</span>
       </div>
       <div>
-        <span>面积大小: {{shopDetails.areaSize}}m²</span>
+        <span>面积大小</span>
+        <span>{{shopDetails.areaSize}}m²</span>
       </div>
       <div>
-        <span>租金: {{shopDetails.money}}元</span>
+        <span>租金</span>
+        <span>{{shopDetails.money}}元</span>
       </div>
       <div>
-        <span>付款方式: {{shopDetails.paymentMethod}}</span>
+        <span>付款方式</span>
+        <span>{{shopDetails.paymentMethod}}</span>
       </div>
       <div>
-        <span>是否已租: {{!shopDetails.isRent ? '未租' : '已租'}}</span>
+        <span>是否已租</span>
+        <span>{{!shopDetails.isRent ? '未租' : '已租'}}</span>
       </div>
       <div>
-        <span>备注：{{shopDetails.remarks}}</span>
+        <span>备注</span>
+        <span>{{shopDetails.remarks}}</span>
       </div>
     </div>
     </div>
@@ -117,5 +130,15 @@ export default {
         padding: 2px 5px;
         font-size: 12px;
         background: #fff;
+    }
+    .cus-box {
+      div {
+        height: 30px;
+      }
+      span:first-child {
+        color: #646566;
+        width: 86px;
+        display: inline-block;
+      }
     }
 </style>
