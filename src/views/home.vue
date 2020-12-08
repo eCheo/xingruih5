@@ -1,7 +1,9 @@
 <template>
   <div>
     <div class="hm-content">
-      <router-view></router-view>
+      <keep-alive>
+        <router-view></router-view>
+      </keep-alive>
     </div>
     <Footer />
   </div>

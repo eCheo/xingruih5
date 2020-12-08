@@ -46,7 +46,7 @@ export default {
         if (result) {
           login(this.validateForm).then(res => {
             if (res.status === 200 && res.data.code === '200') {
-              this.$toast.success('登录成功');
+              // this.$toast.success('登录成功');
               sessionStorage.setItem('token', res.data.data.accessToken)
               sessionStorage.setItem('tokenType', 'bearer')
               this.$router.push({name: '首页'})

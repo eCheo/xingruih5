@@ -31,7 +31,7 @@ service.interceptors.response.use(response => {
           sessionStorage.setItem('cusId', response.data.data.id)
           Toast.error(`您还没有添加客户【${response.data.data.name}】的跟踪信息`);
         }
-        router.push({path: '/customerdetails'})
+        router.push({path: '/shareddetails'})
         return 
       }
       if (response.data.code === '778') { 

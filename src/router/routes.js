@@ -11,6 +11,11 @@ export default [
                 component: () => import('@/views/myCustomer')
             },
             {
+                path: 'customerdetails',
+                name: '详情',
+                component: () => import('@/views/customerDetails')
+            },
+            {
                 path: 'shared',
                 name: '共享池',
                 component: () => import('@/views/shared')

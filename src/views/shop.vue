@@ -149,7 +149,7 @@ export default {
       staffFrom: {
         page: "1",
         queryValue: "",
-        pageSize: 10,
+        size: 10,
         areaSizeStart: "",
         areaSizeEnd: "",
         moneyStart: "",

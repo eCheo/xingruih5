@@ -32,42 +32,42 @@
         <van-field
             v-model="form.areaSize"
             name="面积"
-            label="面积"
+            label="面积(m²)"
             placeholder="面积"
             :rules="[{ required: true, message: '请填写面积' }]"
         />
         <van-field
             v-model="form.floorHeight"
             name="楼层"
-            label="楼层"
+            label="楼层(m)"
             placeholder="楼层"
             :rules="[{ required: true, message: '请填写楼层' }]"
         />
         <van-field
             v-model="form.buildingHeight"
             name="层高"
-            label="层高"
+            label="层高(m)"
             placeholder="层高"
             :rules="[{ required: true, message: '请填写层高' }]"
         />
         <van-field
             v-model="form.deepening"
             name="进深"
-            label="进深"
+            label="进深(m)"
             placeholder="进深"
             :rules="[{ required: true, message: '请填写进深' }]"
         />
         <van-field
             v-model="form.openRoom"
             name="开间"
-            label="开间"
+            label="开间(m)"
             placeholder="开间"
             :rules="[{ required: true, message: '请填写开间' }]"
         />
         <van-field
             v-model="form.money"
             name="租金"
-            label="租金"
+            label="租金(元)"
             placeholder="租金"
             :rules="[{ required: true, message: '请填写租金' }]"
         />

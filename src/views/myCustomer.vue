@@ -54,7 +54,7 @@
     </div>
       <div v-if="staffData.length > 0">
         <template v-for="(item, index) in staffData">
-          <div :key="index" style="padding: 0 12px;">
+          <div :key="index" style="padding: 0 12px;" @click="goDetails(item)">
             <div class="sh-title">
               <div>客户姓名：{{item.name}}</div>
               <div>性别：{{item.sex.message}}</div>
@@ -109,7 +109,7 @@ export default {
       staffFrom: {
         page: "1",
         queryValue: "",
-        pageSize: 10,
+        size: 10,
         demandArea: "",
         deadAreaEnd: "",
         format: "",
@@ -146,7 +146,7 @@ export default {
       this.loading = true;
       this.staffFrom.page = page;
       let params = {
-        size: this.staffFrom.pageSize,
+        size: this.staffFrom.size,
         page: this.staffFrom.page,
         deadAreaEnd: this.staffFrom.deadAreaEnd,
         demandArea: this.staffFrom.demandArea,
