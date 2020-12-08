@@ -125,13 +125,12 @@
 </template>
 
 <script>
-import { getShop, findCityAll, rented } from "../api/user";
+import { getShop, findCityAll} from "../api/user";
 import {
   TreeSelect,
   Overlay,
   Field,
   Card,
-  Button,
   Dialog,
   Slider,
   Search,
@@ -188,7 +187,6 @@ export default {
     Overlay,
     Field,
     Card,
-    Button,
     [Dialog.Component.name]: Dialog.Component,
     "van-slider": Slider,
     "van-search": Search,
@@ -227,57 +225,6 @@ export default {
     goDetails(data) {
       sessionStorage.setItem("shopid", data.id);
       this.$router.push("/shopdetails");
-    },
-    changeStaff() {
-      if (this.editType === "edit") {
-        this.updataStaff();
-      } else {
-        this.createStaff();
-      }
-    },
-    createStaff() {
-      this.$refs.ruleForm.validate(valid => {
-        if (valid) {
-          this.editLoading = true;
-          request(
-            "/api/backend/customer/create.json",
-            METHOD.POST,
-            this.form
-          ).then(res => {
-            if (res.status === 200 && res.data.code === "200") {
-              this.editLoading = false;
-              this.$message.success("添加成功");
-              this.getShop(this.staffFrom.page);
-              this.editModal = false;
-            } else {
-              this.$message.error(res.data.message);
-              this.editLoading = false;
-            }
-          });
-        }
-      });
-    },
-    updataStaff() {
-      this.$refs.ruleForm.validate(valid => {
-        if (valid) {
-          this.editLoading = true;
-          request(
-            "/api/backend/customer/update.json",
-            METHOD.POST,
-            this.form
-          ).then(res => {
-            if (res.status === 200 && res.data.code === "200") {
-              this.editLoading = false;
-              this.$message.success("修改成功");
-              this.editModal = false;
-              this.getShop(1);
-            } else {
-              this.$message.error(res.data.message);
-              this.editLoading = false;
-            }
-          });
-        }
-      });
     },
     claerStaffInfo() {
       this.editType = "add";

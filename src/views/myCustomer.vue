@@ -96,7 +96,7 @@
 
 <script>
 import { getStaff, findCityAll } from "../api/user";
-import { TreeSelect, Overlay, Field, Search, Pagination, Slider, Empty } from "vant";
+import { TreeSelect, Overlay, Search, Pagination, Slider, Empty } from "vant";
 export default {
   name: "customer",
   data() {
@@ -136,7 +136,7 @@ export default {
       areaValue: [0, 100]
     };
   },
-  components: { TreeSelect, Overlay, Field, "van-search": Search, 'van-pagination': Pagination, "van-slider": Slider, 'van-empty': Empty},
+  components: { TreeSelect, Overlay, "van-search": Search, 'van-pagination': Pagination, "van-slider": Slider, 'van-empty': Empty},
   created() {
     this.getStaff(1);
     this.getAddress();
@@ -175,57 +175,6 @@ export default {
     goDetails(data) {
       sessionStorage.setItem("cusId", data.id);
       this.$router.push("/customerdetails");
-    },
-    changeStaff() {
-      if (this.editType === "edit") {
-        this.updataStaff();
-      } else {
-        this.createStaff();
-      }
-    },
-    createStaff() {
-      this.$refs.ruleForm.validate(valid => {
-        if (valid) {
-          this.editLoading = true;
-          request(
-            "/api/backend/customer/create.json",
-            METHOD.POST,
-            this.form
-          ).then(res => {
-            if (res.status === 200 && res.data.code === "200") {
-              this.editLoading = false;
-              this.$message.success("添加成功");
-              this.getStaff(this.staffFrom.page);
-              this.editModal = false;
-            } else {
-              this.$message.error(res.data.message);
-              this.editLoading = false;
-            }
-          });
-        }
-      });
-    },
-    updataStaff() {
-      this.$refs.ruleForm.validate(valid => {
-        if (valid) {
-          this.editLoading = true;
-          request(
-            "/api/backend/customer/update.json",
-            METHOD.POST,
-            this.form
-          ).then(res => {
-            if (res.status === 200 && res.data.code === "200") {
-              this.editLoading = false;
-              this.$message.success("修改成功");
-              this.editModal = false;
-              this.getStaff(1);
-            } else {
-              this.$message.error(res.data.message);
-              this.editLoading = false;
-            }
-          });
-        }
-      });
     },
     claerStaffInfo() {
       this.editType = "add";

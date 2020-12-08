@@ -1,11 +1,11 @@
 'use strict'
-const path = require('path')
+let path = require('path')
 
 function resolve(dir) {
   return path.join(__dirname, dir)
 }
 
-const name = 'news PC'
+const name = 'xingruih5'
 
 
 const port = process.env.port || process.env.npm_config_port || 8091 
@@ -48,13 +48,6 @@ module.exports = {
     config
       .when(process.env.NODE_ENV !== 'development',
         config => {
-          config
-            .plugin('ScriptExtHtmlWebpackPlugin')
-            .after('html')
-            .use('script-ext-html-webpack-plugin', [{
-              inline: /runtime\..*\.js$/
-            }])
-            .end()
           config
             .optimization.splitChunks({
               chunks: 'all',

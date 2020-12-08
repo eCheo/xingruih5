@@ -6,7 +6,7 @@
     left-arrow
     @click-left="$router.push('/shared')">
     </van-nav-bar>
-    <van-form @submit="onSubmit">
+    <van-form>
         <van-field
             v-model="cusInfo.name"
             :readonly='true'
@@ -96,7 +96,7 @@
 
 <script>
 import {findCityAll, getTrackInfo, findById, viewPhone, createRecord} from '../api/user'
-import { Form, Field, Picker, RadioGroup, Radio, Button, Popup, TreeSelect, NavBar, Pagination, Divider } from 'vant';
+import { Form, Field, RadioGroup, Radio, NavBar, Pagination, Divider } from 'vant';
 export default {
     data() {
         return {
@@ -148,15 +148,11 @@ export default {
     components: {
         'van-form': Form,
         'van-field': Field,
-        'van-picker': Picker,
         'van-radio-group': RadioGroup,
         'van-radio': Radio,
-        'van-button': Button,
-        'van-popup':Popup,
         'van-nav-bar':NavBar,
         'van-pagination': Pagination,
-        'van-divider': Divider,
-        TreeSelect
+        'van-divider': Divider
     },
     created() {
         this.getAddress();
@@ -164,15 +160,6 @@ export default {
         this.getTrackInfo(1);
     },
     methods: {
-        onSubmit() {
-            createCustomer(this.form).then(res => {
-                if (res.status === 200 && res.data.code === '200') {
-                    this.$toast.success('添加成功');
-                } else {
-                    this.$toast.error(res.data.message);
-                }
-            })
-        },
         areadCancel() {
             this.showPicker = false;
             this.form.streetId = '';
