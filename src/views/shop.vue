@@ -68,9 +68,6 @@
               <div style="width:100%;height:100%;z-index:2;" @click="item.show = false"></div>
             </Overlay>
           </div>
-          <div>
-            <p @click="$router.push('/addshop')">添加</p>
-          </div>
         </div>
       </div>
     </div>
@@ -327,7 +324,7 @@ export default {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 99;
+  z-index: 0;
   background-color: #fff;
   .cs-box {
     display: flex;

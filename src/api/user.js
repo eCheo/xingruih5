@@ -59,8 +59,8 @@ export const findById = data => {
 export const viewPhone = data => {
   return service({
     url: '/api/backend/customer/viewPhone.json',
-    params: data,
-    method: 'get'
+    data,
+    method: 'post'
   })
 }
 

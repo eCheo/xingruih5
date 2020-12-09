@@ -46,9 +46,6 @@
               <div style="width:100%;height:100%;z-index:2;" @click="item.show = false"></div>
             </Overlay>
           </div>
-          <div>
-            <p @click="$router.push('/addcustomer')">添加</p>
-          </div>
         </div>
       </div>
     </div>
@@ -96,7 +93,7 @@
 
 <script>
 import { getStaff, findCityAll } from "../api/user";
-import { TreeSelect, Overlay, Search, Pagination, Slider, Empty } from "vant";
+import { TreeSelect, Overlay, Search, Pagination, Slider, Empty, Icon} from "vant";
 export default {
   name: "customer",
   data() {
@@ -136,7 +133,7 @@ export default {
       areaValue: [0, 100]
     };
   },
-  components: { TreeSelect, Overlay, "van-search": Search, 'van-pagination': Pagination, "van-slider": Slider, 'van-empty': Empty},
+  components: { TreeSelect, Overlay, "van-search": Search, 'van-pagination': Pagination, "van-slider": Slider, 'van-empty': Empty, 'van-icon': Icon},
   created() {
     this.getStaff(1);
     this.getAddress();
@@ -261,7 +258,7 @@ export default {
   position: fixed;
   top: 0;
   width: 100%;
-  z-index: 99;
+  z-index: 0;
   background-color: #fff;
   .cs-box {
     display: flex;

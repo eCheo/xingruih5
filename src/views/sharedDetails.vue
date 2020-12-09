@@ -16,7 +16,7 @@
             :rules="[{ required: true, message: '请填写客户名称' }]"
         />
         <van-field  
-            v-model="form.sex" 
+            v-model="form.sex.message" 
             name="性别" 
             label="性别" 
             :readonly='true'
