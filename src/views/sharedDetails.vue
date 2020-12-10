@@ -232,7 +232,7 @@ export default {
             }
             viewPhone(params).then(res => {
                 if (res.status === 200 && res.data.code === '200') {
-                this.getStaff(1);
+                    this.getTrackInfo(1);
                 }
             })
         },
