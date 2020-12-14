@@ -10,6 +10,7 @@
         <van-field
             v-model="form.name"
             name="业主名称"
+            required
             label="业主名称"
             placeholder="业主名称"
             :rules="[{ required: true, message: '请填写业主名称' }]"
@@ -17,11 +18,12 @@
         <van-field
             v-model="form.phone"
             name="电话"
+            required
             label="电话"
             placeholder="电话"
             :rules="[{ required: true, message: '请填写电话号码' }]"
         />
-        <van-field name="radio" label="性别">
+        <van-field name="radio" label="性别" required>
             <template #input>
                 <van-radio-group v-model="form.sex" direction="horizontal">
                     <van-radio name="Man">男</van-radio>
@@ -32,6 +34,7 @@
         <van-field
             v-model="form.areaSize"
             name="面积"
+            required
             label="面积(m²)"
             placeholder="面积"
             :rules="[{ required: true, message: '请填写面积' }]"
@@ -39,13 +42,15 @@
         <van-field
             v-model="form.floorHeight"
             name="楼层"
-            label="楼层(m)"
+            required
+            label="楼层"
             placeholder="楼层"
             :rules="[{ required: true, message: '请填写楼层' }]"
         />
         <van-field
             v-model="form.buildingHeight"
             name="层高"
+            required
             label="层高(m)"
             placeholder="层高"
             :rules="[{ required: true, message: '请填写层高' }]"
@@ -53,6 +58,7 @@
         <van-field
             v-model="form.deepening"
             name="进深"
+            required
             label="进深(m)"
             placeholder="进深"
             :rules="[{ required: true, message: '请填写进深' }]"
@@ -60,6 +66,7 @@
         <van-field
             v-model="form.openRoom"
             name="开间"
+            required
             label="开间(m)"
             placeholder="开间"
             :rules="[{ required: true, message: '请填写开间' }]"
@@ -67,6 +74,7 @@
         <van-field
             v-model="form.money"
             name="租金"
+            required
             label="租金(元)"
             placeholder="租金"
             :rules="[{ required: true, message: '请填写租金' }]"
@@ -80,11 +88,13 @@
         <van-field
             readonly
             clickable
+            required
             name="铺源区域"
             label="铺源区域"
             :value="areaText"
             placeholder="铺源区域"
             @click="showPicker = true"
+            :rules="[{ required: true, message: '请选择区域' }]"
             />
             <van-popup v-model="showPicker" position="bottom">
                 <div style="display: flex; justify-content: space-between;padding: 6px 16px 0 16px;font-size: 14px;">
@@ -99,6 +109,14 @@
                 @click-nav='clickNav'
                 />
             </van-popup>
+            <van-field
+            v-model="form.area"
+            name="详细地址"
+            label="详细地址"
+            placeholder="详细地址"
+            type="text"
+            show-word-limit
+        />
         <van-field
             v-model="form.remarks"
             name="备注"
@@ -106,6 +124,7 @@
             placeholder="备注"
             rows="2"
             autosize
+            required
             type="textarea"
             maxlength="50"
             show-word-limit

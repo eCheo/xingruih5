@@ -4,7 +4,7 @@
         <mu-bottom-nav :value.sync='name'>
             <mu-bottom-nav-item :value='0' title="我的客户" icon="assignment_ind" to='/mycustomer'></mu-bottom-nav-item>
             <mu-bottom-nav-item :value='1' title="共享池" icon="supervisor_account" to='/shared'></mu-bottom-nav-item>
-            <div class='ft-add' @click="show = true"><van-icon name="plus" size="40" color="#fff" /></div>
+            <div class='ft-add' @click="show = true"><van-icon name="plus" size="36" color="#fff" /></div>
             <mu-bottom-nav-item :value='2' title="铺源" icon="storefront" to='/shop'></mu-bottom-nav-item>
             <mu-bottom-nav-item :value='3' title="我的" icon="settings" to='/setpassword'></mu-bottom-nav-item>
         </mu-bottom-nav>
@@ -15,7 +15,7 @@
                     <div class="ft-bor" @click="$router.push('/addcustomer'), show = false">
                         <mu-icon value="person_pin"></mu-icon>
                     </div>
-                    <p style="line-height:1;color:#999;">添加用户</p>
+                    <p style="line-height:1;color:#999;">添加客户</p>
                 </div>
                 <div>
                     <div class="ft-bor" @click="$router.push('/addshop'), show = false">
@@ -76,8 +76,8 @@ export default {
 }
 .ft-add {
     width: 50px;
-    height: 50px;
-    padding-top: 5px;
+    height: 41px;
+    padding-top: 2px;
     background-color: #2196f3;
     border-radius: 50%;
 }

@@ -10,6 +10,7 @@
         <van-field
             v-model="form.name"
             name="客户名称"
+            required
             label="客户名称"
             placeholder="客户名称"
             :rules="[{ required: true, message: '请填写客户名称' }]"
@@ -17,11 +18,12 @@
         <van-field
             v-model="form.phone"
             name="手机号"
+            required
             label="手机号"
             placeholder="手机号"
             :rules="[{ required: true, message: '请填写手机号' }]"
         />
-        <van-field name="radio" label="性别">
+        <van-field name="radio" label="性别" required>
             <template #input>
                 <van-radio-group v-model="form.sex" direction="horizontal">
                     <van-radio name="Man">男</van-radio>
@@ -31,6 +33,7 @@
         </van-field>
         <van-field
             v-model="form.format"
+            required
             name="业态"
             label="业态"
             placeholder="业态"
@@ -43,18 +46,20 @@
             placeholder="品牌"
         />
         <div style="display: flex;">
-            <van-field style='width: 118%;' v-model="form.demandArea" label="需求面积"  name="需求面积"  placeholder='m²' :rules="[{ required: true, message: '请填写需求面积' }]"/>
+            <van-field style='width: 118%;' required v-model="form.demandArea" label="需求面积"  name="需求面积"  placeholder='m²' :rules="[{ required: true, message: '请填写需求面积' }]"/>
                 <span style="display:inline-block;background:#fff;padding-top:12px;">~</span>
                   <van-field v-model="form.deadAreaEnd" placeholder='m²' :rules="[{ required: true, message: '请填写需求面积' }]"/>
         </div>
         <van-field
             readonly
             clickable
+            required
             name="需求区域"
             label="需求区域"
             :value="areaText"
             placeholder="需求区域"
             @click="showPicker = true"
+            :rules="[{ required: true, message: '请选择需求区域' }]"
             />
             <van-popup v-model="showPicker" position="bottom">
                 <div style="display: flex; justify-content: space-between;padding: 6px 16px 0 16px;font-size: 14px;">
@@ -72,6 +77,7 @@
         <van-field
             v-model="form.demandAddress"
             name="备注"
+            required
             label="备注"
             placeholder="备注"
             rows="2"
@@ -79,6 +85,7 @@
             type="textarea"
             maxlength="50"
             show-word-limit
+            :rules="[{ required: true, message: '请填写备注' }]"
         />
         <div style="margin: 16px;">
             <van-button round block type="primary" native-type="submit">
@@ -134,6 +141,7 @@ export default {
             createCustomer(this.form).then(res => {
                 if (res.status === 200 && res.data.code === '200') {
                     this.$toast.success('添加成功');
+                    this.$router.push('/mycustomer')
                 } else {
                     this.$toast.error(res.data.message);
                 }
@@ -152,7 +160,6 @@ export default {
             } else {
                 this.areaText = this.columns[this.activeIndex].text + '/' + this.street;
             }
-            console.log(this.form);
         },
         clickItem(data) {
             this.form.streetId = data.id;

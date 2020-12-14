@@ -49,6 +49,11 @@
         </div>
       </div>
     </div>
+    <Overlay :show="loading">
+            <div class="ft-box">
+                <van-loading vertical>加载中..</van-loading>
+            </div>
+        </Overlay>
       <div v-if="staffData.length > 0">
         <template v-for="(item, index) in staffData">
           <div :key="index" style="padding: 0 12px;" @click="goDetails(item)">
@@ -79,7 +84,7 @@
         />
     <div style="position: fixed;
             bottom: 59px;background: #fff;width:100%;display: flex;
-    justify-content: space-between;">
+    justify-content: space-between;z-index:-1;">
           <van-pagination style="
             width: 70%;
             " v-model="staffFrom.page" :page-count="total" @change='getStaff' mode="simple" />
@@ -93,9 +98,9 @@
 
 <script>
 import { getStaff, findCityAll } from "../api/user";
-import { TreeSelect, Overlay, Search, Pagination, Slider, Empty, Icon} from "vant";
+import { TreeSelect, Overlay, Search, Pagination, Slider, Empty, Icon, Loading} from "vant";
 export default {
-  name: "customer",
+  name: "mycustomer",
   data() {
     return {
       num: 10,
@@ -133,7 +138,7 @@ export default {
       areaValue: [0, 100]
     };
   },
-  components: { TreeSelect, Overlay, "van-search": Search, 'van-pagination': Pagination, "van-slider": Slider, 'van-empty': Empty, 'van-icon': Icon},
+  components: { TreeSelect, Overlay, "van-search": Search, 'van-pagination': Pagination, "van-slider": Slider, 'van-empty': Empty, 'van-icon': Icon, 'van-loading': Loading},
   created() {
     this.getStaff(1);
     this.getAddress();
@@ -298,6 +303,12 @@ export default {
   background-color: #fff;
   padding-bottom: 5px;
   text-align: center;
+}
+.ft-box {
+  position: absolute;
+    left: 50%;
+    top: 37%;
+    transform: translate(-50%, -50%);
 }
 </style>
 <style lang="less">

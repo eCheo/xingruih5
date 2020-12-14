@@ -11,7 +11,7 @@
               <mu-text-field type="passWord" v-model="validateForm.passWord" prop="passWord"></mu-text-field>
           </mu-form-item>
           <mu-form-item class="lg-bt">
-            <mu-button full-width style="margin:0"  color="primary" @click="submit">登录</mu-button>
+            <mu-button full-width style="margin:0" :loading='loading'  color="primary" @click="submit">登录</mu-button>
           </mu-form-item>
         </mu-form>
       </mu-container>
@@ -37,20 +37,23 @@ export default {
         account: '',
         passWord: '',
         loginType: "PASSWORD"
-      }
+      },
+      loading: false
     }
   },
   methods: {
      submit () {
       this.$refs.form.validate().then((result) => {
         if (result) {
+          this.loading = true;
           login(this.validateForm).then(res => {
             if (res.status === 200 && res.data.code === '200') {
-              // this.$toast.success('登录成功');
+              this.loading = false;
               sessionStorage.setItem('token', res.data.data.accessToken)
               sessionStorage.setItem('tokenType', 'bearer')
               this.$router.push({name: '首页'})
             } else {
+              this.loading = false;
               this.$toast.error(res.data.message);
             }
           })

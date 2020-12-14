@@ -4,7 +4,7 @@
     title="客户详情"
     left-text="返回"
     left-arrow
-    @click-left="$router.push('/shared')">
+    @click-left="$router.push('/mycustomer')">
     </van-nav-bar>
     <van-form>
         <van-field
@@ -16,7 +16,7 @@
             :rules="[{ required: true, message: '请填写客户名称' }]"
         />
         <van-field  
-            v-model="form.sex" 
+            v-model="cusInfo.sex.message" 
             name="性别" 
             label="性别" 
             :readonly='true'
@@ -102,7 +102,7 @@ export default {
             form: {
                 name: '',
                 phone: '',
-                sex: 'Man',
+                sex: '',
                 format: '',
                 demandArea: '',
                 demandAddress: '',

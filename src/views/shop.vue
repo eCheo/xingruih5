@@ -12,7 +12,7 @@
         <div class="cs-box">
           <div v-for="(item, index) in shTextList" :key="index">
             <p :class="{'p-select': item.show}" @click="changeTitle(item, index)">{{item.name}}</p>
-            <Overlay :show="item.show" class-name="cu-over">
+            <Overlay :show="item.show" class-name="cu-over" style="z-index: 9999">
               <div>
                 <TreeSelect
                   v-if="index === 0"
@@ -71,6 +71,11 @@
         </div>
       </div>
     </div>
+    <Overlay :show="loading">
+            <div class="ft-box">
+                <van-loading vertical>加载中..</van-loading>
+            </div>
+      </Overlay>
     <div v-if="staffData.length > 0">
       <Card
         v-for="(item, index) in staffData"
@@ -102,7 +107,7 @@
     <div
       style="position: fixed;
             bottom: 59px;background: #fff;width:100%;display: flex;
-    justify-content: space-between;"
+    justify-content: space-between;z-index:-1;"
     >
       <van-pagination
         style="
@@ -132,10 +137,11 @@ import {
   Slider,
   Search,
   Pagination,
-  Empty
+  Empty,
+  Loading
 } from "vant";
 export default {
-  name: "customer",
+  name: "shop",
   data() {
     return {
       num: 10,
@@ -188,7 +194,8 @@ export default {
     "van-slider": Slider,
     "van-search": Search,
     "van-pagination": Pagination,
-    'van-empty': Empty
+    'van-empty': Empty,
+    'van-loading': Loading
   },
   created() {
     this.getShop(1);
@@ -352,6 +359,7 @@ export default {
 }
 .cu-over {
   top: 100px;
+  z-index: 9999;
 }
 .sh-title {
   display: flex;
@@ -383,6 +391,12 @@ export default {
   background-color: wheat;
   color: #966915;
   border-radius: 4px;
+}
+.ft-box {
+  position: absolute;
+    left: 50%;
+    top: 37%;
+    transform: translate(-50%, -50%);
 }
 </style>
 <style lang="less">
