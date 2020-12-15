@@ -20,7 +20,14 @@
             name="性别" 
             label="性别" 
             :readonly='true'
-            placeholder="性别">
+            placeholder="性别">memberName
+        </van-field>
+        <van-field  
+            v-model="cusInfo.memberName" 
+            name="录入人" 
+            label="录入人" 
+            :readonly='true'
+            placeholder="录入人">
         </van-field>
         <van-field
             v-model="cusInfo.format"
@@ -232,7 +239,7 @@ export default {
             }
             viewPhone(params).then(res => {
                 if (res.status === 200 && res.data.code === '200') {
-                    this.getTrackInfo(1);
+                    this.findById();
                 }
             })
         },

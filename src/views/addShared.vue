@@ -53,13 +53,11 @@
         <van-field
             readonly
             clickable
-            required
             name="需求区域"
             label="需求区域"
             :value="areaText"
             placeholder="需求区域"
             @click="showPicker = true"
-            :rules="[{ required: true, message: '请选择需求区域' }]"
             />
             <van-popup v-model="showPicker" position="bottom">
                 <div style="display: flex; justify-content: space-between;padding: 6px 16px 0 16px;font-size: 14px;">

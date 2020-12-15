@@ -111,11 +111,13 @@
             </van-popup>
             <van-field
             v-model="form.area"
+            required
             name="详细地址"
             label="详细地址"
             placeholder="详细地址"
             type="text"
             show-word-limit
+            :rules="[{ required: true, message: '请填写详细地址' }]"
         />
         <van-field
             v-model="form.remarks"
