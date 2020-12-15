@@ -33,8 +33,8 @@
                       :range="true"
                       @change="onAreaChange"
                       :min="0"
-                      :max="9999"
-                      :step="100"
+                      :max="10000"
+                      :step="1000"
                       active-color="#4caf50"
                     />
                   </div>
@@ -43,15 +43,15 @@
                   <div style="padding: 9px 34px; margin-bottom: -1px;background-color:#fff;">
                     <p
                       style="text-align: center;"
-                    >{{moneyValue[0]+"元-"}}{{ moneyValue[1] === 1000 ? '无限' : moneyValue[1] +'元'}}</p>
+                    >{{moneyValue[0]+"元-"}}{{ moneyValue[1] === 10000 ? '无限' : moneyValue[1] +'元'}}</p>
                     <van-slider
                       button-size="20"
                       v-model="moneyValue"
                       :range="true"
                       @change="onMoneyChange"
                       :min="0"
-                      :max="999"
-                      :step="100"
+                      :max="10000"
+                      :step="1000"
                       active-color="#4caf50"
                     />
                   </div>
@@ -180,8 +180,8 @@ export default {
       ],
       total: 10,
       refreshing: false,
-      moneyValue: [0, 1000],
-      areaValue: [0, 100],
+      moneyValue: [0, 10000],
+      areaValue: [0, 10000],
       page: 1
     };
   },
@@ -309,11 +309,11 @@ export default {
     },
     onMoneyChange(val) {
       this.staffFrom.moneyStart = val[0];
-      this.staffFrom.moneyEnd = val[1] === 10000 ? 99999 : val[1];
+      this.staffFrom.moneyEnd = val[1] === 10000 ? '' : val[1];
     },
     onAreaChange(val) {
       this.staffFrom.areaSizeStart = val[0];
-      this.staffFrom.areaSizeEnd = val[1] === 1000 ? 9999 : val[1];
+      this.staffFrom.areaSizeEnd = val[1] === 10000 ? '' : val[1];
     }
   },
   watch: {

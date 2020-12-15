@@ -26,15 +26,15 @@
                   <div style="padding: 9px 34px; margin-bottom: -1px;background-color:#fff;">
                     <p
                       style="text-align: center;"
-                    >{{areaValue[0]+"m²-"}}{{ areaValue[1] === 1000 ? '无限' : areaValue[1] +'m²'}}</p>
+                    >{{areaValue[0]+"m²-"}}{{ areaValue[1] === 10000 ? '无限' : areaValue[1] +'m²'}}</p>
                     <van-slider
                       button-size="20"
                       v-model="areaValue"
                       :range="true"
                       @change="onAreaChange"
                       :min="0"
-                      :max="999"
-                      :step="100"
+                      :max="10000"
+                      :step="1000"
                       active-color="#4caf50"
                     />
                   </div>
@@ -135,7 +135,7 @@ export default {
       ],
       page: 1,
       total: 0,
-      areaValue: [0, 100]
+      areaValue: [0, 10000]
     };
   },
   components: { TreeSelect, Overlay, "van-search": Search, 'van-pagination': Pagination, "van-slider": Slider, 'van-empty': Empty, 'van-icon': Icon, 'van-loading': Loading},
@@ -245,7 +245,7 @@ export default {
     },
     onAreaChange(val) {
       this.staffFrom.demandArea = val[0];
-      this.staffFrom.deadAreaEnd = val[1] === 1000 ? 9999 : val[1];
+      this.staffFrom.deadAreaEnd = val[1] === 10000 ? '' : val[1];
     }
   },
   watch: {

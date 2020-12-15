@@ -105,4 +105,10 @@ html {
   display: block;
   text-align: center;
 }
+.mu-demo-form {
+  max-width: auto !important;
+}
+.container {
+    max-width: 540px;
+}
 </style>
