@@ -18,6 +18,7 @@
         <van-field
             v-model="form.phone"
             name="手机号"
+            type="digit"
             required
             label="手机号"
             placeholder="手机号"
@@ -75,7 +76,6 @@
         <van-field
             v-model="form.demandAddress"
             name="备注"
-            required
             label="备注"
             placeholder="备注"
             rows="2"
@@ -83,7 +83,6 @@
             type="textarea"
             maxlength="50"
             show-word-limit
-            :rules="[{ required: true, message: '请填写备注' }]"
         />
         <div style="margin: 16px;">
             <van-button round block type="primary" native-type="submit">

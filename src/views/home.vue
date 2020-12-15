@@ -34,8 +34,14 @@ export default {
 }
 </style>
 <style lang='less'>
-.van-card {
-  z-index: -1;
+.van-card{
+  position: static !important;
+}
+.van-card__thumb {
+  position: static !important;
+}
+.van-card__content {
+  position: static !important;
 }
 .van-tag {
   z-index: -1;

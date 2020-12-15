@@ -60,17 +60,17 @@
             type="textarea"
             show-word-limit
         />
-        <!-- <div style="padding:0 16px;margin: 10px 0;height: 41px;">
+        <div style="padding:0 16px;margin: 10px 0;height: 41px;">
             <span style="color:#646566;padding-top: 10px;display: inline-block;">电话号码：{{cusInfo.isViewPhone ? cusInfo.hidPhone : cusInfo.phone}}</span>
             <mu-button style="margin-left:15px;float:right;" v-if="cusInfo.isViewPhone" color="success"  @click="viewPhone">查看电话号码</mu-button>
-        </div> -->
+        </div>
     </van-form>
-    <!-- <div style="padding-left:16px;margin: 10px 0;display:flex;">
+    <div style="padding-left:16px;margin: 10px 0;display:flex;">
               <span style="padding-top: 10px;color:#646566;">备注：</span>
               <van-field v-model="remarks" placeholder="请输入跟踪信息" style="width:60%;margin-right:10px;" />
               <mu-button color='success' @click='addRecord'>添加</mu-button>
-    </div> -->
-    <!-- <van-divider>跟踪信息</van-divider>
+    </div>
+    <van-divider>跟踪信息</van-divider>
     <mu-list textline="two-line" style="background-color: #fff;">
         <mu-list-item avatar :ripple="false" button v-for="(item, index) in sharedData" :key="index" style="margin-bottom: 10px;">
         <mu-list-item-content>
@@ -88,8 +88,8 @@
         </mu-list-item-content>
         </mu-list-item>
         <p style="text-align: center;" v-if="sharedData.length === 0">暂无数据</p>
-    </mu-list> -->
-    <!-- <van-pagination v-model="staffFrom.page" :page-count="total" @change='getTrackInfo' mode="simple" /> -->
+    </mu-list>
+    <van-pagination v-model="staffFrom.page" :page-count="total" @change='getTrackInfo' mode="simple" />
     </div>
 </template>
 
@@ -232,7 +232,7 @@ export default {
             }
             viewPhone(params).then(res => {
                 if (res.status === 200 && res.data.code === '200') {
-                this.getStaff(1);
+                this.findById();
                 }
             })
         },

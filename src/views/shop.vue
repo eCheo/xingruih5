@@ -76,7 +76,7 @@
                 <van-loading vertical>加载中..</van-loading>
             </div>
       </Overlay>
-    <div v-if="staffData.length > 0">
+    <div v-if="staffData.length > 0" style="position: static;">
       <Card
         v-for="(item, index) in staffData"
         :key="index"

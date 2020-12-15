@@ -18,6 +18,7 @@
         <van-field
             v-model="form.phone"
             name="电话"
+            type="digit"
             required
             label="电话"
             placeholder="电话"
@@ -34,6 +35,7 @@
         <van-field
             v-model="form.areaSize"
             name="面积"
+            type="digit"
             required
             label="面积(m²)"
             placeholder="面积"
@@ -42,6 +44,7 @@
         <van-field
             v-model="form.floorHeight"
             name="楼层"
+            type="digit"
             required
             label="楼层"
             placeholder="楼层"
@@ -50,6 +53,7 @@
         <van-field
             v-model="form.buildingHeight"
             name="层高"
+            type="number"
             required
             label="层高(m)"
             placeholder="层高"
@@ -58,6 +62,7 @@
         <van-field
             v-model="form.deepening"
             name="进深"
+            type="digit"
             required
             label="进深(m)"
             placeholder="进深"
@@ -66,6 +71,7 @@
         <van-field
             v-model="form.openRoom"
             name="开间"
+            type="digit"
             required
             label="开间(m)"
             placeholder="开间"
@@ -74,6 +80,7 @@
         <van-field
             v-model="form.money"
             name="租金"
+            type="digit"
             required
             label="租金(元)"
             placeholder="租金"
@@ -81,9 +88,11 @@
         />
         <van-field
             v-model="form.paymentMethod"
+            required
             name="付款方式"
             label="付款方式"
             placeholder="付款方式"
+            :rules="[{ required: true, message: '请填写付款方式' }]"
         />
         <van-field
             readonly
