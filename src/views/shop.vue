@@ -170,7 +170,7 @@ export default {
           show: false
         },
         {
-          name: "需求面积",
+          name: "面积",
           show: false
         },
         {

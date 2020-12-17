@@ -46,4 +46,8 @@ export default {
 .van-tag {
   z-index: -1;
 }
+.mu-list-two-line .mu-item {
+  height: auto !important;
+  min-height: 72px;
+}
 </style>
