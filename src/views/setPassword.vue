@@ -76,7 +76,7 @@ export default {
                   sessionStorage.removeItem('token')
                   this.$router.push('/login')
               } else {
-                  this.$toast.error(res.data.message)
+                  this.$toast.fail(res.data.message)
               }
           })
       }

@@ -76,12 +76,14 @@
           </div>
         </template>
       </div>
+      <div v-else>
       <van-empty
-          v-else
           class="custom-image"
           image="https://img.yzcdn.cn/vant/custom-empty-image.png"
           description="暂无数据"
         />
+        <p v-if="loadingFail" style="text-align:center;">加载失败，点击<span @click="getStaff(1)" style="color:rgb(76, 175, 80);">重新加载</span></p>
+      </div>
     <div style="position: fixed;
             bottom: 59px;background: #fff;width:100%;display: flex;
     justify-content: space-between;z-index:-1;">
@@ -104,7 +106,6 @@ export default {
   data() {
     return {
       num: 10,
-      finished: false,
       loading: false,
       text: "List",
       staffData: [],
@@ -135,7 +136,8 @@ export default {
       ],
       page: 1,
       total: 0,
-      areaValue: [0, 10000]
+      areaValue: [0, 10000],
+      loadingFail: false
     };
   },
   components: { TreeSelect, Overlay, "van-search": Search, 'van-pagination': Pagination, "van-slider": Slider, 'van-empty': Empty, 'van-icon': Icon, 'van-loading': Loading},
@@ -160,11 +162,11 @@ export default {
       getStaff(params).then(res => {
         if (res.status === 200 && res.data.code === "200") {
           this.staffData = res.data.data.content;
-          this.finished = true;
           this.loading = false;
+          this.loadingFail = false;
         } else {
-          this.finished = true;
           this.loading = false;
+          this.loadingFail = true;
           this.$message.error(res.data.message);
         }
       });
@@ -239,7 +241,7 @@ export default {
           });
           this.items.unshift({ id: "", text: "全部" });
         } else {
-          this.$toast.error(res.data.message);
+          this.$toast.fail(res.data.message);
         }
       });
     },

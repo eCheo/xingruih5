@@ -54,7 +54,7 @@ export default {
               this.$router.push({name: '首页'})
             } else {
               this.loading = false;
-              this.$toast.error(res.data.message);
+              this.$toast.fail(res.data.message);
             }
           })
         }

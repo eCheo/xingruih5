@@ -210,7 +210,7 @@ export default {
                     this.$toast.success('添加成功');
                     this.$router.push('/shop')
                 } else {
-                    this.$toast.error(res.data.message);
+                    this.$toast.fail(res.data.message);
                 }
             })
         },
@@ -244,13 +244,13 @@ export default {
                 })
                 this.columns = res.data.data.map(item => {return {id:item.id, text: item.name,children: item.children}})
                 } else {
-                this.$toast.error(res.data.message);
+                this.$toast.fail(res.data.message);
                 }
             })
         },
         beforeRead(file) {
             if (file.type !== 'image/jpeg' && file.type !== 'image/jpg' && file.type !== 'image/png') {
-                this.$toast.error('请上传jpg,png格式图片');
+                this.$toast.fail('请上传jpg,png格式图片');
                 return false;
             } else {
                 return true

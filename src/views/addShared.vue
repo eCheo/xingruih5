@@ -140,7 +140,7 @@ export default {
                     this.$toast.success('添加成功');
                     this.$router.push('/mycustomer')
                 } else {
-                    this.$toast.error(res.data.message);
+                    this.$toast.fail(res.data.message);
                 }
             })
         },
@@ -174,7 +174,7 @@ export default {
                 })
                 this.columns = res.data.data.map(item => {return {id:item.id, text: item.name,children: item.children}})
                 } else {
-                this.$toast.error(res.data.message);
+                this.$toast.fail(res.data.message);
                 }
             })
         }

@@ -97,12 +97,17 @@
         <p style="text-align: center;" v-if="sharedData.length === 0">暂无数据</p>
     </mu-list>
     <van-pagination v-model="staffFrom.page" :page-count="total" @change='getTrackInfo' mode="simple" />
+    <Overlay :show="loading">
+            <div class="ft-box">
+                <van-loading vertical>加载中..</van-loading>
+            </div>
+    </Overlay>
     </div>
 </template>
 
 <script>
 import {findCityAll, getTrackInfo, findById, viewPhone, createRecord} from '../api/user'
-import { Form, Field, RadioGroup, Radio, NavBar, Pagination, Divider } from 'vant';
+import { Form, Field, RadioGroup, Radio, NavBar, Pagination, Divider, Overlay, Loading} from 'vant';
 export default {
     data() {
         return {
@@ -148,7 +153,8 @@ export default {
             cusInfo: {
                 sex: {}
             },
-            remarks: ''
+            remarks: '',
+            loading: false
         }
     },
     components: {
@@ -158,7 +164,9 @@ export default {
         'van-radio': Radio,
         'van-nav-bar':NavBar,
         'van-pagination': Pagination,
-        'van-divider': Divider
+        'van-divider': Divider,
+        Overlay,
+        'van-loading': Loading
     },
     created() {
         this.getAddress();
@@ -196,7 +204,7 @@ export default {
                 })
                 this.columns = res.data.data.map(item => {return {id:item.id, text: item.name,children: item.children}})
                 } else {
-                this.$toast.error(res.data.message);
+                this.$toast.fail(res.data.message);
                 }
             })
         },
@@ -213,7 +221,7 @@ export default {
                     this.sharedData = res.data.data.content;
                     this.total = res.data.data.totalPages
                 } else {
-                    this.$toast.error(res.data.message);
+                    this.$toast.fail(res.data.message);
                 }
             })
         },
@@ -221,15 +229,17 @@ export default {
             let params = {
                 id: sessionStorage.getItem('cusId')
             }
+            this.loading = true
             findById(params).then(res => {
                 if (res.status === 200 && res.data.code === '200') {
                     let reg = /^(\d{3})\d{4}(\d{4})$/
                     this.cusInfo = res.data.data
                     this.cusInfo.hidPhone = this.cusInfo.phone.replace(reg, '$1****$2')
                     this.areaText = (this.cusInfo.areaName || '--')+ ' ' + (this.cusInfo.streetName || '--')
-                    this.tabLoading = false
+                    this.loading = false
                 } else {
-                    this.$toast.error(res.data.message)
+                    this.$toast.fail(res.data.message)
+                    this.loading = false
                 }
             })
         },
@@ -254,7 +264,7 @@ export default {
                 this.remarks = ''
                 this.getTrackInfo(1)
                 } else {
-                this.$toast.error(res.data.message);
+                this.$toast.fail(res.data.message);
                 }
             })
         },
@@ -266,5 +276,13 @@ export default {
 .mu-item-sub-title {
     overflow: visible;
     white-space: normal; 
+}
+</style>
+<style lang="less" scoped>
+.ft-box {
+  position: absolute;
+    left: 50%;
+    top: 37%;
+    transform: translate(-50%, -50%);
 }
 </style>

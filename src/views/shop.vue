@@ -23,7 +23,7 @@
                   @click-nav="clickNav"
                 />
                 <div v-if="index === 1">
-                    <div style="padding: 9px 34px; margin-bottom: -1px;background-color:#fff;">
+                  <div style="padding: 9px 34px; margin-bottom: -1px;background-color:#fff;">
                     <p
                       style="text-align: center;"
                     >{{areaValue[0]+"m²-"}}{{ areaValue[1] === 10000 ? '无限' : areaValue[1] +'m²'}}</p>
@@ -72,10 +72,10 @@
       </div>
     </div>
     <Overlay :show="loading">
-            <div class="ft-box">
-                <van-loading vertical>加载中..</van-loading>
-            </div>
-      </Overlay>
+      <div class="ft-box">
+        <van-loading vertical>加载中..</van-loading>
+      </div>
+    </Overlay>
     <div v-if="staffData.length > 0" style="position: static;">
       <Card
         v-for="(item, index) in staffData"
@@ -98,12 +98,17 @@
         </template>
       </Card>
     </div>
-    <van-empty
-            v-else
-            class="custom-image"
-            image="https://img.yzcdn.cn/vant/custom-empty-image.png"
-            description="暂无数据"
-    />
+    <div v-else>
+      <van-empty
+        class="custom-image"
+        image="https://img.yzcdn.cn/vant/custom-empty-image.png"
+        description="暂无数据"
+      />
+      <p v-if="loadingFail" style="text-align:center;">
+        加载失败，点击
+        <span @click="getShop(1)" style="color:rgb(76, 175, 80);">重新加载</span>
+      </p>
+    </div>
     <div
       style="position: fixed;
             bottom: 59px;background: #fff;width:100%;display: flex;
@@ -127,7 +132,7 @@
 </template>
 
 <script>
-import { getShop, findCityAll} from "../api/user";
+import { getShop, findCityAll } from "../api/user";
 import {
   TreeSelect,
   Overlay,
@@ -145,7 +150,6 @@ export default {
   data() {
     return {
       num: 10,
-      finished: false,
       loading: false,
       text: "List",
       staffData: [],
@@ -182,7 +186,8 @@ export default {
       refreshing: false,
       moneyValue: [0, 10000],
       areaValue: [0, 10000],
-      page: 1
+      page: 1,
+      loadingFail: false
     };
   },
   components: {
@@ -194,8 +199,8 @@ export default {
     "van-slider": Slider,
     "van-search": Search,
     "van-pagination": Pagination,
-    'van-empty': Empty,
-    'van-loading': Loading
+    "van-empty": Empty,
+    "van-loading": Loading
   },
   created() {
     this.getShop(1);
@@ -205,21 +210,19 @@ export default {
     getShop(page) {
       this.loading = true;
       this.staffFrom.page = page;
-        getShop(this.staffFrom).then(res => {
-          if (res.status === 200 && res.data.code === "200") {
-            this.staffData = res.data.data.content;
-            this.finished = true;
-            this.loading = false;
-            this.total =
-              res.data.data.totalElements === 0
-                ? 1
-                : res.data.data.totalElements;
-          } else {
-            this.finished = true;
-            this.loading = false;
-            this.$message.error(res.data.message);
-          }
-        });
+      getShop(this.staffFrom).then(res => {
+        if (res.status === 200 && res.data.code === "200") {
+          this.staffData = res.data.data.content;
+          this.loadingFail = false;
+          this.loading = false;
+          this.total =
+            res.data.data.totalElements === 0 ? 1 : res.data.data.totalElements;
+        } else {
+          this.loadingFail = true;
+          this.loading = false;
+          this.$message.error(res.data.message);
+        }
+      });
     },
     changeNumber() {
       if (this.page !== "") {
@@ -303,17 +306,17 @@ export default {
           });
           this.items.unshift({ id: "", text: "全部" });
         } else {
-          this.$toast.error(res.data.message);
+          this.$toast.fail(res.data.message);
         }
       });
     },
     onMoneyChange(val) {
       this.staffFrom.moneyStart = val[0];
-      this.staffFrom.moneyEnd = val[1] === 10000 ? '' : val[1];
+      this.staffFrom.moneyEnd = val[1] === 10000 ? "" : val[1];
     },
     onAreaChange(val) {
       this.staffFrom.areaSizeStart = val[0];
-      this.staffFrom.areaSizeEnd = val[1] === 10000 ? '' : val[1];
+      this.staffFrom.areaSizeEnd = val[1] === 10000 ? "" : val[1];
     }
   },
   watch: {
@@ -394,9 +397,9 @@ export default {
 }
 .ft-box {
   position: absolute;
-    left: 50%;
-    top: 37%;
-    transform: translate(-50%, -50%);
+  left: 50%;
+  top: 37%;
+  transform: translate(-50%, -50%);
 }
 </style>
 <style lang="less">

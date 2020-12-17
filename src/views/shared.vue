@@ -78,12 +78,14 @@
         </div>
       </template>
     </div>
-    <van-empty
-      v-else
-      class="custom-image"
-      image="https://img.yzcdn.cn/vant/custom-empty-image.png"
-      description="暂无数据"
-    />
+    <div v-else>
+      <van-empty
+          class="custom-image"
+          image="https://img.yzcdn.cn/vant/custom-empty-image.png"
+          description="暂无数据"
+        />
+        <p v-if="loadingFail" style="text-align:center;">加载失败，点击<span @click="getStaff(1)" style="color:rgb(76, 175, 80);">重新加载</span></p>
+      </div>
     <div
       style="position: fixed;
             bottom: 59px;background: #fff;width:100%;display: flex;
@@ -124,7 +126,7 @@ export default {
   data() {
     return {
       num: 10,
-      finished: false,
+      loadingFail: false,
       loading: false,
       text: "List",
       staffData: [],
@@ -190,10 +192,10 @@ export default {
         if (res.status === 200 && res.data.code === "200") {
           this.staffData = res.data.data.content;
           this.total = res.data.data.totalPages;
-          this.finished = true;
+          this.loadingFail = false;
           this.loading = false;
         } else {
-          this.finished = true;
+          this.loadingFail = true;
           this.loading = false;
           this.$message.error(res.data.message);
         }
@@ -323,7 +325,7 @@ export default {
           });
           this.items.unshift({ id: "", text: "全部" });
         } else {
-          this.$toast.error(res.data.message);
+          this.$toast.fail(res.data.message);
         }
       });
     },
