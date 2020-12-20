@@ -21,6 +21,7 @@
 
 <script>
 import {login} from '../api/user'
+import {getPaw, setPaw} from '../utils/cookie'
 export default {
   name: "login",
   data() {
@@ -41,6 +42,11 @@ export default {
       loading: false
     }
   },
+  created() {
+    if (getPaw()) {
+      this.validateForm = JSON.parse(getPaw())
+    }
+  },
   methods: {
      submit () {
       this.$refs.form.validate().then((result) => {
@@ -51,6 +57,7 @@ export default {
               this.loading = false;
               sessionStorage.setItem('token', res.data.data.accessToken)
               sessionStorage.setItem('tokenType', 'bearer')
+              setPaw(this.validateForm)
               this.$router.push({name: '首页'})
             } else {
               this.loading = false;
